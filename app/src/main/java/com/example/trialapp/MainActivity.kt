@@ -5,27 +5,36 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ArrayAdapter
 import androidx.core.view.accessibility.AccessibilityEventCompat.setAction
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
-
+        private var notePosition= POSITION_IS_NOT_SET
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            val originValue = textDisplayValue.text.toString().toInt()
-            val newValue = originValue +1
-            textDisplayValue.text = newValue.toString()
+//        val dm = DataManager()
+        val adapterCourses = ArrayAdapter<CourseInfo>(this,
+                android.R.layout.simple_spinner_item, DataManager.courses.values.toList())
+        adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerCourses.adapter= adapterCourses
 
+        notePosition= intent.getIntExtra(EXTRA_NOTE_POSITION, POSITION_IS_NOT_SET)
+        if(notePosition != POSITION_IS_NOT_SET)
+            displayNote()
+    }
 
-            Snackbar.make(view, "Value $originValue changed to $newValue", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
+    private fun displayNote() {
+        val note = DataManager.notes[notePosition]
+        textNoteTitle.setText(note.title)
+        textNoteText.setText(note.text)
+        val courseProduct= DataManager.courses.values.indexOf(note.course)
+        spinnerCourses.setSelection(courseProduct)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
