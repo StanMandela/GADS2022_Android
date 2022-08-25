@@ -1,5 +1,6 @@
 package com.example.trialapp
 
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         notePosition= intent.getIntExtra(EXTRA_NOTE_POSITION, POSITION_IS_NOT_SET)
         if(notePosition != POSITION_IS_NOT_SET)
             displayNote()
+
     }
 
     private fun displayNote() {
