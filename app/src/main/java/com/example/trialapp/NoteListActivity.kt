@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import kotlinx.android.synthetic.main.activity_note_list.*
 import kotlinx.android.synthetic.main.content_note_list.*
@@ -24,7 +25,7 @@ class NoteListActivity : AppCompatActivity() {
             startActivity(activityIntent)
         }
 
-    list_items.layoutManager= LinearLayout
+    list_items.layoutManager= LinearLayoutManager(this)
 
     }
 
