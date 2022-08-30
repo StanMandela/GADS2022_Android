@@ -1,18 +1,15 @@
 package com.example.trialapp
 
-import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
-import androidx.core.view.accessibility.AccessibilityEventCompat.setAction
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
-class MainActivity : AppCompatActivity() {
+class NoteActivity : AppCompatActivity() {
         private var notePosition= POSITION_IS_NOT_SET
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,9 +22,20 @@ class MainActivity : AppCompatActivity() {
         adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerCourses.adapter= adapterCourses
 
-        notePosition= intent.getIntExtra(EXTRA_NOTE_POSITION, POSITION_IS_NOT_SET)
+        notePosition= savedInstanceState?.getInt(NOTE_POSITION, POSITION_IS_NOT_SET) ?:
+            intent.getIntExtra(NOTE_POSITION, POSITION_IS_NOT_SET)
         if(notePosition != POSITION_IS_NOT_SET)
             displayNote()
+        else{
+            DataManager.notes.add(NoteInfo())
+            notePosition = DataManager.notes.lastIndex
+        }
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState?.putInt(NOTE_POSITION,notePosition)
 
     }
 
@@ -75,5 +83,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveNote()
+    }
+
+    private fun saveNote() {
+        val note = DataManager.notes[notePosition]
+        note.title = textNoteTitle.text.toString()
+        note.text= textNoteText.text.toString()
+        note.course= spinnerCourses.selectedItem as CourseInfo
     }
 }
