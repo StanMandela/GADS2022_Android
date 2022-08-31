@@ -20,10 +20,7 @@ class NoteListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_note_list)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener{ view ->
-            val activityIntent = Intent(this, NoteActivity::class.java)
-            startActivity(activityIntent)
-        }
+
 
     list_items.layoutManager= LinearLayoutManager(this)
     list_items.adapter = NoteRecyclerAdapter(this, DataManager.notes)
