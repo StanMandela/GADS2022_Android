@@ -26,12 +26,14 @@ class NoteListActivity : AppCompatActivity() {
         }
 
     list_items.layoutManager= LinearLayoutManager(this)
+    list_items.adapter = NoteRecyclerAdapter(this, DataManager.notes)
 
     }
 
     override fun onResume() {
         super.onResume()
-        //(list_notes.adapter as ArrayAdapter<NoteInfo>).notifyDataSetChanged()
+        list_items.adapter?.notifyDataSetChanged()
+
 
     }
 
